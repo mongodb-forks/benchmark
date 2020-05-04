@@ -116,6 +116,13 @@ bool JSONReporter::ReportContext(const Context& context) {
     // which must be escaped in JSON otherwise it blows up conforming JSON
     // decoders
     std::string executable_name = Context::executable_name;
+    auto ReplaceAll = [](std::string* str, const std::string& from, const std::string& to) {
+        std::size_t start = 0;
+        while ((start = str->find(from, start)) != std::string::npos) {
+            str->replace(start, from.length(), to);
+            start += to.length();
+        }
+    };
     ReplaceAll(&executable_name, "\\", "\\\\");
     out << indent << FormatKV("executable", executable_name) << ",\n";
   }
